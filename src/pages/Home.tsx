@@ -14,7 +14,6 @@ import ProductCard from '../components/common/ProductCard';
 const Home = () => {
   const [cart, setCart] = useState<String>('0');
   const [products, setProducts] = useState({});
-  const [alterProduct, setAlterProduct] = useState({});
   const name = useAppSelector((state) => state.user.name);
   const token = getCookie('accessToken');
 
@@ -27,6 +26,7 @@ const Home = () => {
           setCart(purchase);
           if (products.length === 0) {
             const { content } = await getRecommendProducts(1);
+            console.log(content);
             setProducts(content);
           } else {
             setProducts(products);
@@ -93,6 +93,9 @@ const Home = () => {
       )}
       <Products>
         <h4>추천 상품</h4>
+        <div className="desc">
+          <span>더 많은 추천상품은 맞춤추천 탭에서 확인해주세요!</span>
+        </div>
         {token ? (
           <Swiper
             slidesPerView={1.3}
@@ -131,7 +134,7 @@ const Container = styled.div`
   width: 100%;
   background-color: var(--color-white);
   box-sizing: border-box;
-  padding: 45px 35px 160px;
+  padding: 45px 35px 30px;
   .swiper-wrapper {
     padding-bottom: 42px;
   }
@@ -224,11 +227,16 @@ const Join = styled.div`
 const Products = styled.div`
   margin-top: 50px;
   h4 {
-    font-size: 18px;
+    font-size: 22px;
     line-height: 1.7em;
     letter-spacing: -1.5px;
-    margin-bottom: 15px;
     font-weight: bold;
+  }
+  .desc {
+    display: flex;
+    justify-content: end;
+    margin-bottom: 15px;
+    color: var(--color-orange);
   }
 `;
 
