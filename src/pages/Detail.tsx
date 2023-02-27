@@ -51,6 +51,7 @@ const Detail = () => {
   const [likeState, setLikeState] = useState<boolean>(false);
   const cart = JSON.parse(localStorage.getItem('cart') || '[]');
   const [list, setList] = useState(cart);
+  const token = getCookie('accessToken');
 
   useEffect(() => {
     async function getData() {
@@ -87,7 +88,12 @@ const Detail = () => {
         dispatch(hideLoading());
       }
     }
-    getData();
+    token
+      ? getData()
+      : AlertModal({
+          message: '로그인 후 이용 가능합니다.',
+          type: 'alert',
+        });
   }, []);
 
   const [colorState, setColorState] = useState<object>(setColor);
