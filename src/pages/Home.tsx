@@ -21,18 +21,17 @@ const Home = () => {
     async function getList() {
       if (token) {
         try {
-          const products = await getProducts();
+          const res = await getProducts();
           const purchase = await getPurchaseLength();
           setCart(purchase);
-          if (products.length === 0) {
+          if (res.length < 3) {
             const { content } = await getRecommendProducts(1);
-            console.log(content);
-            setProducts(content);
+            setProducts([content[1], content[2], content[3]]);
           } else {
-            setProducts(products);
+            setProducts(res);
           }
         } catch (error) {
-          console.log('에러 발생!');
+          console.log('에러 발생');
         }
       } else {
         return null;
@@ -98,7 +97,7 @@ const Home = () => {
         </div>
         {token ? (
           <Swiper
-            slidesPerView={1.3}
+            slidesPerView={1.2}
             spaceBetween={20}
             pagination={{
               clickable: true,
