@@ -2,11 +2,7 @@ import React, { useState } from 'react';
 import LoanWishList from '../components/wish/LoanWishList';
 import styled from 'styled-components';
 import DepositWishList from '../components/wish/DepositWishList';
-import { getCookie } from '../utils/cookie';
-import AlertLoginState from '../components/common/AlertLoginState';
-
 function Wish() {
-  const token = getCookie('accessToken');
   const [toggleButton, setToggleButton] = useState<boolean>(true);
 
   const ButtonToggle = () => {
@@ -14,26 +10,18 @@ function Wish() {
   };
   return (
     <Wrap>
-      {token ? (
-        <>
-          <Title>관심 상품</Title>
-          <div>
-            <FlexBox>
-              <Button onClick={ButtonToggle} toggleButton={toggleButton}>
-                예/적금 관심상품
-              </Button>
-              <Button onClick={ButtonToggle} toggleButton={!toggleButton}>
-                대출 관심상품
-              </Button>
-            </FlexBox>
-            {toggleButton ? <DepositWishList /> : <LoanWishList />}
-          </div>
-        </>
-      ) : (
-        <div style={{ marginTop: '80px' }}>
-          <AlertLoginState text={'로그인 후 이용 가능합니다.'} />
-        </div>
-      )}
+      <Title>관심 상품</Title>
+      <div>
+        <FlexBox>
+          <Button onClick={ButtonToggle} toggleButton={toggleButton}>
+            예/적금 관심상품
+          </Button>
+          <Button onClick={ButtonToggle} toggleButton={!toggleButton}>
+            대출 관심상품
+          </Button>
+        </FlexBox>
+        {toggleButton ? <DepositWishList /> : <LoanWishList />}
+      </div>
     </Wrap>
   );
 }

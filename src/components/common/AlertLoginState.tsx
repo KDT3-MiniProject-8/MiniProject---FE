@@ -34,6 +34,7 @@ const AlertLoginState = (props: any) => {
 };
 
 export const AlreadyLogin = styled.div`
+  margin-top: 60px;
   font-size: 30px;
   color: var(--color-orange);
   text-align: center;
