@@ -6,11 +6,8 @@ import PurchaseCard from '../components/user/PurchaseCard';
 import styled from 'styled-components';
 import { Button, FlexBox } from './Wish';
 import { EmptyWishBox } from '../components/wish/DepositWishList';
-import { getCookie } from '../utils/cookie';
-import AlertLoginState from '../components/common/AlertLoginState';
 
 function Purchase() {
-  const token = getCookie('accessToken');
   const [depositData, setDepositData] = useState([]);
   const [loanData, setLoanData] = useState([]);
   const [allData, setAllData] = useState([]);
@@ -54,53 +51,30 @@ function Purchase() {
 
   return (
     <main>
-      {token ? (
-        <Wrap>
-          <h1>가입상품</h1>
-          <div className="countbox">
-            {allData?.length ? <p>가입(신청)중인 {count}개의 상품이 있습니다.</p> : null}
-          </div>
-          <div>
-            <FlexBox>
-              <Button onClick={ButtonToggle} toggleButton={toggleButton}>
-                가입중인 상품
-              </Button>
-              <Button onClick={ButtonToggle} toggleButton={!toggleButton}>
-                신청 취소 내역
-              </Button>
-            </FlexBox>
-            {toggleButton ? (
-              allData?.length ? (
-                allData?.map((item: any) => {
-                  return item.status === '신청완료' ? (
-                    <div key={item.purchaseId}>
-                      <PurchaseCard
-                        item={item}
-                        key={item.purchaseId}
-                        removeButton={removeButton}
-                        canceled={false}
-                      />
-                    </div>
-                  ) : null;
-                })
-              ) : (
-                <EmptyWishBox>
-                  <img src="/rocket.png" style={{ width: '400px', marginTop: '50px' }} />
-                  <p>가입중인 상품이 없습니다.</p>
-                  <Link to="/allproducts">
-                    <button>전체 상품 둘러보기</button>
-                  </Link>
-                </EmptyWishBox>
-              )
-            ) : allData?.length ? (
+      <Wrap>
+        <h1>가입상품</h1>
+        <div className="countbox">
+          {allData?.length ? <p>가입(신청)중인 {count}개의 상품이 있습니다.</p> : null}
+        </div>
+        <div>
+          <FlexBox>
+            <Button onClick={ButtonToggle} toggleButton={toggleButton}>
+              가입중인 상품
+            </Button>
+            <Button onClick={ButtonToggle} toggleButton={!toggleButton}>
+              신청 취소 내역
+            </Button>
+          </FlexBox>
+          {toggleButton ? (
+            allData?.length ? (
               allData?.map((item: any) => {
-                return item.status === '신청취소' ? (
+                return item.status === '신청완료' ? (
                   <div key={item.purchaseId}>
                     <PurchaseCard
                       item={item}
                       key={item.purchaseId}
                       removeButton={removeButton}
-                      canceled={true}
+                      canceled={false}
                     />
                   </div>
                 ) : null;
@@ -108,16 +82,33 @@ function Purchase() {
             ) : (
               <EmptyWishBox>
                 <img src="/rocket.png" style={{ width: '400px', marginTop: '50px' }} />
-                <p>취소한 상품이 없습니다.</p>
+                <p>가입중인 상품이 없습니다.</p>
+                <Link to="/allproducts">
+                  <button>전체 상품 둘러보기</button>
+                </Link>
               </EmptyWishBox>
-            )}
-          </div>
-        </Wrap>
-      ) : (
-        <div style={{ marginTop: '80px' }}>
-          <AlertLoginState text={'로그인 후 이용 가능합니다.'} />
+            )
+          ) : allData?.length ? (
+            allData?.map((item: any) => {
+              return item.status === '신청취소' ? (
+                <div key={item.purchaseId}>
+                  <PurchaseCard
+                    item={item}
+                    key={item.purchaseId}
+                    removeButton={removeButton}
+                    canceled={true}
+                  />
+                </div>
+              ) : null;
+            })
+          ) : (
+            <EmptyWishBox>
+              <img src="/rocket.png" style={{ width: '400px', marginTop: '50px' }} />
+              <p>취소한 상품이 없습니다.</p>
+            </EmptyWishBox>
+          )}
         </div>
-      )}
+      </Wrap>
     </main>
   );
 }

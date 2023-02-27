@@ -8,8 +8,6 @@ import { NoList } from '../pages/Home';
 import { BiSearch } from 'react-icons/bi';
 import { getDeposit, getLoan } from '../api/api';
 import { useInView } from 'react-intersection-observer';
-import { getCookie } from '../utils/cookie';
-import AlertLoginState from '../components/common/AlertLoginState';
 import ProductCard from '../components/common/ProductCard';
 
 const Search = () => {
@@ -137,73 +135,66 @@ const Search = () => {
 
   return (
     <Container>
-      {getCookie('accessToken') ? (
-        <>
-          <SearchForm>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-              }}
-            >
-              <input
-                type="text"
-                value={searchTitle}
-                placeholder="검색어를 입력해 주세요"
-                onChange={(e) => handleChange(e)}
-              />
-              <button
-                aria-label="submit"
-                onClick={() => {
-                  handleSubmit(searchTitle);
-                }}
-              >
-                <BiSearch size="24" color="var(--color-light-grey)" />
-              </button>
-            </form>
-          </SearchForm>
-          <SearchList>
-            <ProductTap>
-              <button className={active[0] ? 'active' : ''} onClick={handleDeposits}>
-                적금 / 예금 상품
-              </button>
-              <button className={active[1] ? 'active' : ''} onClick={handleLoans}>
-                대출 상품
-              </button>
-              <select onChange={(e) => handleSort(e)}>
-                <option value="">선택</option>
-                <option value="0">이름순</option>
-                <option value="1">은행순</option>
-              </select>
-            </ProductTap>
-            {onProduct === 1 ? (
-              deposits.length > 0 ? (
-                deposits.map((item: any, idx) => {
-                  const category = { category: '예금/적금' };
-                  Object.assign(item, category);
-                  return <ProductCard item={item} key={idx} />;
-                })
-              ) : (
-                <span>
-                  <NoList>검색결과가 없습니다.</NoList>
-                </span>
-              )
-            ) : loans.length > 0 ? (
-              loans.map((item: any, idx) => {
-                const category = { category: '대출' };
-                Object.assign(item, category);
-                return <ProductCard item={item} key={idx} />;
-              })
-            ) : (
-              <span>
-                <NoList>검색결과가 없습니다.</NoList>
-              </span>
-            )}
-          </SearchList>
-        </>
-      ) : (
-        <AlertLoginState text={'로그인 후 이용 가능합니다.'} />
-      )}
-
+      <SearchForm>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+        >
+          <input
+            type="text"
+            value={searchTitle}
+            placeholder="검색어를 입력해 주세요"
+            onChange={(e) => handleChange(e)}
+          />
+          <button
+            aria-label="submit"
+            onClick={() => {
+              handleSubmit(searchTitle);
+            }}
+          >
+            <BiSearch size="24" color="var(--color-light-grey)" />
+          </button>
+        </form>
+      </SearchForm>
+      <SearchList>
+        <ProductTap>
+          <button className={active[0] ? 'active' : ''} onClick={handleDeposits}>
+            적금 / 예금 상품
+          </button>
+          <button className={active[1] ? 'active' : ''} onClick={handleLoans}>
+            대출 상품
+          </button>
+          <select onChange={(e) => handleSort(e)}>
+            <option value="">선택</option>
+            <option value="0">이름순</option>
+            <option value="1">은행순</option>
+          </select>
+        </ProductTap>
+        {onProduct === 1 ? (
+          deposits.length > 0 ? (
+            deposits.map((item: any, idx) => {
+              const category = { category: '예금/적금' };
+              Object.assign(item, category);
+              return <ProductCard item={item} key={idx} />;
+            })
+          ) : (
+            <span>
+              <NoList>검색결과가 없습니다.</NoList>
+            </span>
+          )
+        ) : loans.length > 0 ? (
+          loans.map((item: any, idx) => {
+            const category = { category: '대출' };
+            Object.assign(item, category);
+            return <ProductCard item={item} key={idx} />;
+          })
+        ) : (
+          <span>
+            <NoList>검색결과가 없습니다.</NoList>
+          </span>
+        )}
+      </SearchList>
       <div ref={ref}></div>
     </Container>
   );

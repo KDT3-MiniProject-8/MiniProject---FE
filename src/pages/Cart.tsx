@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import CartPageCard from '../components/common/CartPageCard';
 import { Link } from 'react-router-dom';
 import { EmptyWishBox } from '../components/wish/DepositWishList';
-import { getCookie } from '../utils/cookie';
-import AlertLoginState from '../components/common/AlertLoginState';
 
 const Cart = () => {
   const cart = JSON.parse(localStorage.getItem('cart') || '[]');
@@ -24,47 +22,41 @@ const Cart = () => {
   return (
     <CartWrap>
       <h1>장바구니</h1>
-      {getCookie('accessToken') ? (
+      {list.length ? (
         <>
-          {list.length ? (
-            <>
-              <p>{list ? list.length : 0}개의 상품이 있습니다.</p>
-              <div>
-                <Table>
-                  <colgroup>
-                    <col style={{ width: '80%' }} />
-                    <col style={{ width: '20%' }} />
-                  </colgroup>
-                  <thead>
-                    <tr>
-                      <th scope="col">상품</th>
-                      <th scope="col">신청/삭제</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {list.map((item: any) => (
-                      <CartPageCard key={item[0]} item={item} deleteItem={deleteItem} />
-                    ))}
-                  </tbody>
-                </Table>
-                <div className="spanDiv">
-                  <span>장바구니는 로그아웃 시 초기화됩니다.</span>
-                  <span>오래 보관하시려면 ❤️관심상품 기능을 이용해주세요.</span>
-                </div>
-              </div>
-            </>
-          ) : (
-            <EmptyWishBox>
-              <img src="/rocket.png" style={{ width: '400px', marginTop: '50px' }} />
-              <p>장바구니에 담은 상품이 없습니다</p>
-              <Link to="/allproducts">
-                <button>전체 상품 둘러보기</button>
-              </Link>
-            </EmptyWishBox>
-          )}
+          <p>{list ? list.length : 0}개의 상품이 있습니다.</p>
+          <div>
+            <Table>
+              <colgroup>
+                <col style={{ width: '80%' }} />
+                <col style={{ width: '20%' }} />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th scope="col">상품</th>
+                  <th scope="col">신청/삭제</th>
+                </tr>
+              </thead>
+              <tbody>
+                {list.map((item: any) => (
+                  <CartPageCard key={item[0]} item={item} deleteItem={deleteItem} />
+                ))}
+              </tbody>
+            </Table>
+            <div className="spanDiv">
+              <span>장바구니는 로그아웃 시 초기화됩니다.</span>
+              <span>오래 보관하시려면 ❤️관심상품 기능을 이용해주세요.</span>
+            </div>
+          </div>
         </>
       ) : (
-        <AlertLoginState text={'로그인 후 이용 가능합니다.'} />
+        <EmptyWishBox>
+          <img src="/rocket.png" style={{ width: '400px', marginTop: '50px' }} />
+          <p>장바구니에 담은 상품이 없습니다</p>
+          <Link to="/allproducts">
+            <button>전체 상품 둘러보기</button>
+          </Link>
+        </EmptyWishBox>
       )}
     </CartWrap>
   );

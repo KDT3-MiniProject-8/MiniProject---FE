@@ -1,16 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getRecommendProducts } from '../api/api';
 import { hideLoading, showLoading } from '../store/loadingSlice';
-import AlertLoginState from '../components/common/AlertLoginState';
 import styled from 'styled-components';
-import { getCookie } from '../utils/cookie';
 import { useAppDispatch, useAppSelector } from '../hooks/useDispatchHooks';
 import { useInView } from 'react-intersection-observer';
 import { NoList } from './Home';
 import ProductCard from '../components/common/ProductCard';
 
 function Recommend() {
-  const token = getCookie('accessToken');
   const dispatch = useAppDispatch();
   const name = useAppSelector((state) => state.user.name);
 
@@ -22,20 +19,15 @@ function Recommend() {
   // 맞춤 상품 조회
   const getCustomRecommend = useCallback(
     async (setProducts: any, setLast: any) => {
-      if (token) {
-        try {
-          dispatch(showLoading());
-          const response = await getRecommendProducts(page);
-          setProducts((prevState: any) => [...prevState, ...response.content]);
-          setLast(response.last);
-        } catch (error) {
-          console.log(error);
-        } finally {
-          dispatch(hideLoading());
-        }
-      } else {
-        console.log('토큰 없음');
-        return null;
+      try {
+        dispatch(showLoading());
+        const response = await getRecommendProducts(page);
+        setProducts((prevState: any) => [...prevState, ...response.content]);
+        setLast(response.last);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        dispatch(hideLoading());
       }
     },
     [page],
@@ -55,27 +47,23 @@ function Recommend() {
 
   return (
     <Container>
-      {token ? (
-        <Products>
-          <h4>
-            <span>{name}</span> 님에게
-            <br />
-            맞춤 상품을 추천드려요.
-          </h4>
-          {Array.isArray(products) ? (
-            products.map((item, idx) => {
-              return <ProductCard item={item} key={idx} />;
-            })
-          ) : (
-            <NoList>
-              <p>추천 상품이 없습니다.</p>
-            </NoList>
-          )}
-          <div ref={ref}></div>
-        </Products>
-      ) : (
-        <AlertLoginState text={'로그인 후 이용 가능합니다.'} />
-      )}
+      <Products>
+        <h4>
+          <span>{name}</span> 님에게
+          <br />
+          맞춤 상품을 추천드려요.
+        </h4>
+        {Array.isArray(products) ? (
+          products.map((item, idx) => {
+            return <ProductCard item={item} key={idx} />;
+          })
+        ) : (
+          <NoList>
+            <p>추천 상품이 없습니다.</p>
+          </NoList>
+        )}
+        <div ref={ref}></div>
+      </Products>
     </Container>
   );
 }

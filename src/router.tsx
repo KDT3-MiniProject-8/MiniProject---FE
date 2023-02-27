@@ -15,6 +15,9 @@ import AllProductList from './components/allProducts/AllProductList';
 import Wish from './pages/Wish';
 import UserInfo from './components/user/UserInfo';
 import Purchase from './pages/Purchase';
+import { getCookie } from './utils/cookie';
+import AlertLoginState from './components/common/AlertLoginState';
+const token = getCookie('accessToken');
 
 const router = createBrowserRouter([
   {
@@ -27,35 +30,35 @@ const router = createBrowserRouter([
       },
       {
         path: 'search',
-        element: <Search />,
+        element: token ? <Search /> : <AlertLoginState text={'로그인 후 이용 가능합니다.'} />,
       },
       {
         path: 'detail/:category/:productId',
-        element: <Detail />,
+        element: token ? <Detail /> : <AlertLoginState text={'로그인 후 이용 가능합니다.'} />,
       },
       {
         path: 'cart',
-        element: <Cart />,
+        element: token ? <Cart /> : <AlertLoginState text={'로그인 후 이용 가능합니다.'} />,
       },
       {
         path: 'login',
-        element: <Login />,
+        element: token ? <AlertLoginState text={'이미 로그인 상태입니다.'} /> : <Login />,
       },
       {
         path: 'findpassword',
-        element: <FindPassword />,
+        element: token ? <AlertLoginState text={'이미 로그인 상태입니다.'} /> : <FindPassword />,
       },
       {
         path: 'signup',
-        element: <SignUp />,
+        element: token ? <AlertLoginState text={'이미 로그인 상태입니다.'} /> : <SignUp />,
       },
       {
         path: 'user',
-        element: <MyPage />,
+        element: token ? <MyPage /> : <AlertLoginState text={'로그인 후 이용 가능합니다.'} />,
       },
       {
         path: 'recommend',
-        element: <Recommend />,
+        element: token ? <Recommend /> : <AlertLoginState text={'로그인 후 이용 가능합니다.'} />,
       },
       {
         path: 'allproducts',
@@ -79,7 +82,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'wish',
-        element: <Wish />,
+        element: token ? <Wish /> : <AlertLoginState text={'로그인 후 이용 가능합니다.'} />,
       },
       {
         path: 'user/info',
@@ -87,7 +90,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'purchase',
-        element: <Purchase />,
+        element: token ? <Purchase /> : <AlertLoginState text={'로그인 후 이용 가능합니다.'} />,
       },
       {
         path: '*',
