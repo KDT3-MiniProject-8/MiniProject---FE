@@ -281,13 +281,15 @@ const Detail = () => {
                       연체 이자율은?
                     </div>
                     {delayText?.map((delay, index) => (
-                      <div key={index}>
+                      <span key={index}>
                         {index !== delayText.length - 1 ? (
-                          <div>{delay}%</div>
+                          <span>
+                            {delay}%{index === delayText.length - 2 ? '' : <br />}
+                          </span>
                         ) : (
                           <span>{delay}</span>
                         )}
-                      </div>
+                      </span>
                     ))}
                   </ProductDesc>
                 )}
